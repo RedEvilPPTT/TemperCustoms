@@ -357,7 +357,7 @@ app.get('/faturas', (req, res) => {
 
 
 // Rota para apagar faturas da semana especificada
-app.post('/apagarFaturasSemana', (req, res) => {
+app.post('TemperCustoms/apagarFaturasSemana', (req, res) => {
   const { semana } = req.body;
 
   console.log("Semana recebida para exclusão:", semana);
@@ -391,7 +391,7 @@ app.post('/apagarFaturasSemana', (req, res) => {
 });
 
 // Rota de login
-app.post('/login', (req, res) => {
+app.post('TemperCustoms/login', (req, res) => {
   const { username } = req.body;
 
   // Verificar se o usuário existe na base de dados
@@ -418,7 +418,7 @@ app.post('/login', (req, res) => {
 });
 
 // Rota para a página principal (proteção de rota)
-app.get('/home', (req, res) => {
+app.get('TemperCustoms/home', (req, res) => {
   if (req.session.username) {
     res.sendFile(path.join(__dirname, 'faturar.html'));
   } else {
@@ -439,7 +439,7 @@ app.get('/home', (req, res) => {
 
 
 // Rota de logout
-app.get('/logout', (req, res) => {
+app.get('TemperCustoms/logout', (req, res) => {
   req.session.destroy(err => {
     if (err) {
       return res.send('Erro ao fazer logout');
