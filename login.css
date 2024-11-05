@@ -1,0 +1,104 @@
+/* Configurações básicas */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f6f8;
+    margin: 0;
+    padding: 20px;
+    color: #333;
+}
+
+/* Título principal */
+h2 {
+    text-align: center;
+    color: #4a90e2;
+    margin-bottom: 10px;
+}
+
+/* Texto do total de faturas */
+p {
+    text-align: center;
+    font-size: 16px;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+/* Estilização do formulário de pesquisa */
+form {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+form label {
+    font-weight: bold;
+    margin-right: 10px;
+}
+
+form input[type="text"] {
+    padding: 8px;
+    font-size: 14px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    width: 200px;
+}
+
+form button {
+    padding: 8px 16px;
+    background-color: #4a90e2;
+    color: white;
+    font-size: 14px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-left: 10px;
+}
+
+form button:hover {
+    background-color: #357ab8;
+}
+
+/* Estilização da tabela */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px auto;
+    background-color: white;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+}
+
+th, td {
+    padding: 12px 15px;
+    text-align: center;
+    border-bottom: 1px solid #ddd;
+}
+
+th {
+    background-color: #4a90e2;
+    color: white;
+    font-weight: bold;
+}
+
+tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+tr:hover {
+    background-color: #f1f1f1;
+}
+
+/* Responsividade para telas menores */
+@media (max-width: 768px) {
+    body {
+        padding: 10px;
+    }
+
+    form input[type="text"], form button {
+        font-size: 12px;
+        width: 100%;
+    }
+
+    th, td {
+        padding: 8px 10px;
+    }
+}

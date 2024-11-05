@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Temper Customs - Sistema de Faturação</title>
+    <link rel="stylesheet" href="style.css">
+    <script>
+        function abrirNovaAba() {
+            // Abre a nova página em uma nova aba
+            window.open('RegistoFaturas.html', '_blank');
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h2>Funcionario: <span id="username"></span></h2>
+            <button id="logout" onclick="location.href='/logout'">Sair</button>
+            <div class="search-car">
+                <!--<label for="carros">Procurar Carro:</label>-->
+                <label for="pesquisa-carro">Procurar Carro:</label>
+                <input type="text" id="pesquisa-carro" placeholder="Digite o nome do carro...">
+                <select id="carros" onchange="selecionarCarro()">
+                    <option>Carregando...</option> <!-- Opção inicial enquanto os dados são carregados -->
+                </select>
+            </div>
+            
+            <div class="last-record">
+                Último registo feito: <span>03/11/2024 09:55</span>
+            </div>
+        </header>
+
+        <div class="content">
+            <div class="discount-section">
+                <button onclick="aplicarDesconto()">Desconto</button>
+                <button onclick="semDesconto()">Normal</button>
+            </div>
+
+            <div class="calculation">
+                <h3>CÁLCULO TUNAGENS</h3>
+                <table>
+                    <tr>
+                        <th>Quantidade</th>
+                        <th>Preço da Tunagem</th>
+                    </tr>
+                    <tr>
+                        <td>Autocolantes: <input id="quantidade-autocolantes" type="number" placeholder="0" min="0" oninput="calcularTotal()"></td> <td><span id="valor-autocolantes">0</span> €</td>
+                    </tr>
+                    <tr>
+                        <td>Buzina: <input id="quantidade-buzina" type="number" placeholder="0" min="0" oninput="calcularTotal()"></td> <td><span id="valor-buzina">0</span> €</td>
+                    </tr>
+                    <tr>
+                        <td>Chaparia: <input id="quantidade-chaparia" type="number" placeholder="0" min="0" oninput="calcularTotal()"></td> <td><span id="valor-chaparia">0</span> €</td>
+                    </tr>
+                    <tr>
+                        <td>Matricula: <input id="quantidade-matricula" type="number" placeholder="0" min="0" oninput="calcularTotal()"></td> <td><span id="valor-matricula">0</span> €</td>
+                    </tr>
+                    <tr>
+                        <td>Pinturas: <input id="quantidade-pinturas" type="number" placeholder="0" min="0" oninput="calcularTotal()"></td> <td><span id="valor-pinturas">0</span> €</td>
+                    </tr>
+                    <tr>
+                        <td>Perolado: <input id="quantidade-perolado" type="number" placeholder="0" min="0" oninput="calcularTotal()"></td> <td><span id="valor-perolado">0</span> €</td>
+                    </tr>
+                    <tr>
+                        <td>Stance: <input id="quantidade-stance" type="number" placeholder="0" min="0" oninput="calcularTotal()"></td> <td><span id="valor-stance">0</span> €</td>
+                    </tr>
+                    <tr>
+                        <td>Pneu Blindado/Drift: <input id="quantidade-pneublindadodrift" type="number" placeholder="0" min="0" oninput="calcularTotal()"></td> <td><span id="valor-pneublindadodrift">0</span> €</td>
+                    </tr>
+                    <tr>
+                        <td>Jantes: <input id="quantidade-jantes" type="number" placeholder="0" min="0" oninput="calcularTotal()"></td> <td><span id="valor-jantes">0</span> €</td>
+                    </tr>
+                    <tr>
+                        <td>Cor das Rodas: <input id="quantidade-cordasrodas" type="number" placeholder="0" min="0" oninput="calcularTotal()"></td> <td><span id="valor-cordasrodas">0</span> €</td>
+                    </tr>
+                    <tr>
+                        <td>Armadura: <input id="quantidade-armadura" type="number" placeholder="0" min="0" oninput="calcularTotal()"></td> <td><span id="valor-armadura">0</span> €</td>
+                    </tr>
+                    <tr>
+                        <td>Motor: <input id="quantidade-motor" type="number" placeholder="0" min="0" oninput="calcularTotal()"></td> <td><span id="valor-motor">0</span> €</td>
+                    </tr>
+                    <tr>
+                        <td>Suspensão: <input id="quantidade-suspensao" type="number" placeholder="0" min="0" oninput="calcularTotal()"></td> <td><span id="valor-suspensao">0</span> €</td>
+                    </tr>
+                    <tr>
+                        <td>Transmissão: <input id="quantidade-transmissao" type="number" placeholder="0" min="0" oninput="calcularTotal()"></td> <td><span id="valor-transmissao">0</span> €</td>
+                    </tr>
+                    <tr>
+                        <td>Travões: <input id="quantidade-travoes" type="number" placeholder="0" min="0" oninput="calcularTotal()"></td> <td><span id="valor-travoes">0</span> €</td>
+                    </tr>
+                    <tr>
+                        <td>Turbo: <input id="quantidade-turbo" type="number" placeholder="0" min="0" oninput="calcularTotal()"></td> <td><span id="valor-turbo">0</span> €</td>
+                    </tr>
+                    <!-- Adicione mais linhas para os outros itens -->
+                </table>
+                <div class="total">
+                    Total: <span id="valor-total">0 €</span>  Total + IVA: <td><span id="valor-total-iva">0</span> €</td>
+                </div>
+            </div>
+
+            <div class="actions">
+                <button>CARRO NÃO STAND</button>
+                <button>FULL TUNE</button>
+                <button>APAGAR FULLTUNE</button>
+                <button>FULL PINTURAS</button>
+                <button onclick="resetarFormulario()">APAGAR TUDO</button>
+            </div>
+
+            <div class="notes">
+                <h3>Observações:</h3>
+                <textarea></textarea>
+            </div>
+
+            <button class="register-invoice">Registar Fatura</button>
+            <button class="ver-faturas" onclick="abrirNovaAba()">Ver Faturas</button>
+        </div>
+
+        <aside>
+            <div class="kits">
+                <h3>Kits</h3>
+                <table>
+                    <tr>
+                        <th>Quantidade</th>
+                        <th>Total</th>
+                    </tr>
+                    <tr>
+                        <td><input id="quantidade-kits" type="number" placeholder="0" min="0" oninput="calcularTotal()"></td> <td><span id="valor-kits">0</span> €</td>
+                    </tr>
+
+                </table>
+                <h3>Venda de carros (Anuncio)</h3>
+                <table>
+                    <tr>
+                        <th>Quantidade</th>
+                        <th>Total</th>
+                    </tr>
+                    <tr>
+                        <td><input id="quantidade-vendacontrato" type="number" placeholder="0" min="0" oninput="calcularTotal()"></td> <td><span id="valor-vendacontrato">0</span> €</td>
+                    </tr>
+                </table>
+            </div>
+            <div class="logo">
+                <img src="temper-customs-logo.png" alt="Temper Customs Logo">
+            </div>
+        </aside>
+    </div>
+    <script>
+        document.getElementById("username").textContent = localStorage.getItem("username");
+
+        let carros = []; // Variável para armazenar a lista de carros
+        let carroSelecionado = null; // Variável para o carro selecionado
+
+        // Função para carregar carros na dropdown
+        async function carregarCarros() {
+            try {
+                const response = await fetch('/api/carros');
+                carros = await response.json();
+                
+                // Inicializa a dropdown com todos os carros
+                atualizarDropdown(carros);
+            } catch (error) {
+                console.error('Erro ao carregar carros:', error);
+            }
+        }
+
+        // Função para atualizar a dropdown com uma lista de carros
+        function atualizarDropdown(listaCarros) {
+            const dropdown = document.getElementById('carros');
+            dropdown.innerHTML = ''; // Limpa as opções existentes
+
+            listaCarros.forEach(carro => {
+                const option = document.createElement('option');
+                option.value = carro.id;
+                option.textContent = carro.nome;
+                dropdown.appendChild(option);
+            });
+        }
+
+        // Função para filtrar carros com base na pesquisa
+        function filtrarCarros() {
+            const termoPesquisa = document.getElementById('pesquisa-carro').value.toLowerCase();
+            const carrosFiltrados = carros.filter(carro => 
+                carro.nome && carro.nome.toLowerCase().includes(termoPesquisa)
+            );
+            atualizarDropdown(carrosFiltrados); // Atualiza a dropdown com carros filtrados
+        }
+
+        // Adiciona um evento para a caixa de texto de pesquisa
+        document.getElementById('pesquisa-carro').addEventListener('input', filtrarCarros);
+        // Função chamada quando um carro é selecionado na dropdown
+        function selecionarCarro() {
+            const carroId = document.getElementById('carros').value;
+            carroSelecionado = carros.find(carro => carro.id == carroId);
+                
+            // Reseta os valores ao trocar de carro
+            document.getElementById('quantidade-autocolantes').value = 0;
+            document.getElementById('valor-autocolantes').textContent = '0';
+            document.getElementById('quantidade-buzina').value = 0;
+            document.getElementById('valor-buzina').textContent = '0';
+            document.getElementById('quantidade-chaparia').value = 0;
+            document.getElementById('valor-chaparia').textContent = '0';
+            document.getElementById('quantidade-matricula').value = 0;
+            document.getElementById('valor-matricula').textContent = '0';
+            document.getElementById('quantidade-pinturas').value = 0;
+            document.getElementById('valor-pinturas').textContent = '0';
+            document.getElementById('quantidade-perolado').value = 0;
+            document.getElementById('valor-perolado').textContent = '0';
+            document.getElementById('quantidade-stance').value = 0;
+            document.getElementById('valor-stance').textContent = '0';
+            document.getElementById('quantidade-pneublindadodrift').value = 0;
+            document.getElementById('valor-pneublindadodrift').textContent = '0';
+            document.getElementById('quantidade-jantes').value = 0;
+            document.getElementById('valor-jantes').textContent = '0';
+            document.getElementById('quantidade-cordasrodas').value = 0;
+            document.getElementById('valor-cordasrodas').textContent = '0';
+            document.getElementById('quantidade-armadura').value = 0;
+            document.getElementById('valor-armadura').textContent = '0';
+            document.getElementById('quantidade-motor').value = 0;
+            document.getElementById('valor-motor').textContent = '0';
+            document.getElementById('quantidade-suspensao').value = 0;
+            document.getElementById('valor-suspensao').textContent = '0';
+            document.getElementById('quantidade-transmissao').value = 0;
+            document.getElementById('valor-transmissao').textContent = '0';
+            document.getElementById('quantidade-travoes').value = 0;
+            document.getElementById('valor-travoes').textContent = '0';
+            document.getElementById('quantidade-turbo').value = 0;
+            document.getElementById('valor-turbo').textContent = '0';
+            document.getElementById('quantidade-kits').value = 0;
+            document.getElementById('valor-kits').textContent = '0';
+            document.getElementById('quantidade-vendacontrato').value = 0;
+            document.getElementById('valor-vendacontrato').textContent = '0';
+
+            document.getElementById('valor-total').textContent = '0';
+            document.getElementById('valor-total-iva').textContent = '0';
+        }
+
+        // Função para calcular o total de cada item e o valor geral
+        function calcularTotal() {
+            const quantidadeAutocolantes = parseInt(document.getElementById('quantidade-autocolantes').value) || 0;
+            const quantidadeBuzina = parseInt(document.getElementById('quantidade-buzina').value) || 0;
+            const quantidadeChaparia = parseInt(document.getElementById('quantidade-chaparia').value) || 0;
+            const quantidadeMatricula = parseInt(document.getElementById('quantidade-matricula').value) || 0;
+            const quantidadePinturas = parseInt(document.getElementById('quantidade-pinturas').value) || 0;
+            const quantidadePerolado = parseInt(document.getElementById('quantidade-perolado').value) || 0;
+            const quantidadeStance = parseInt(document.getElementById('quantidade-stance').value) || 0;
+            const quantidadePneu = parseInt(document.getElementById('quantidade-pneublindadodrift').value) || 0;
+            const quantidadeJantes = parseInt(document.getElementById('quantidade-jantes').value) || 0;
+            const quantidadeCorRodas = parseInt(document.getElementById('quantidade-cordasrodas').value) || 0;
+            const quantidadeArmadura = parseInt(document.getElementById('quantidade-armadura').value) || 0;
+            const quantidadeMotor = parseInt(document.getElementById('quantidade-motor').value) || 0;
+            const quantidadeSuspensao = parseInt(document.getElementById('quantidade-suspensao').value) || 0;
+            const quantidadeTransmissao = parseInt(document.getElementById('quantidade-transmissao').value) || 0;
+            const quantidadeTravoes = parseInt(document.getElementById('quantidade-travoes').value) || 0;
+            const quantidadeTurbo = parseInt(document.getElementById('quantidade-turbo').value) || 0;
+            const quantidadeKits = parseInt(document.getElementById('quantidade-kits').value) || 0;
+            const quantidadeVenda = parseInt(document.getElementById('quantidade-vendacontrato').value) || 0;
+            const testeKits = carros.find(x => x.kits !== 0)
+            console.log('testeKits',testeKits.kits)
+            const totalKits = quantidadeKits * testeKits.kits
+
+            if (carroSelecionado) {
+                const totalAutocolantes = quantidadeAutocolantes * carroSelecionado.autocolantes;
+                const totalBuzina = quantidadeBuzina * carroSelecionado.buzina;
+                const totalChaparia = quantidadeChaparia * carroSelecionado.chaparia;
+                const totalMatricula = quantidadeMatricula * carroSelecionado.matricula;
+                const totalPinturas = quantidadePinturas * carroSelecionado.pinturas;
+                const totalPerolado = quantidadePerolado * carroSelecionado.perolado;
+                const totalStance = quantidadeStance * carroSelecionado.stance;
+                const totalPneu = quantidadePneu * carroSelecionado.pneublindadodrift;
+                const totalJantes = quantidadeJantes * carroSelecionado.jantes;
+                const totalCorRodas = quantidadeCorRodas * carroSelecionado.cordasrodas;
+                const totalArmadura = quantidadeArmadura * carroSelecionado.armadura;
+                const totalMotor = quantidadeMotor * carroSelecionado.motor;
+                const totalSuspensao = quantidadeSuspensao * carroSelecionado.suspensao;
+                const totalTransmissao = quantidadeTransmissao * carroSelecionado.transmissao;
+                const totalTravoes = quantidadeTravoes * carroSelecionado.travoes;
+                const totalTurbo = quantidadeTurbo * carroSelecionado.turbo;
+                // totalKits =  quantidadeKits * carroSelecionado.kits;
+                // const totalKits =  quantidadeKits * carroSelecionado.kits;
+                // const totalKits = quantidadeKits * testeKits.kits
+                const totalVenda = quantidadeVenda * carroSelecionado.vendacontrato;
+                const totalGeral = totalAutocolantes + totalBuzina + totalChaparia + totalMatricula + totalPinturas + totalPerolado + totalStance + totalPneu + totalJantes + totalCorRodas + totalArmadura + totalMotor + totalSuspensao + totalTransmissao + totalTravoes + totalTurbo + totalKits + totalVenda;
+                console.log('totalKits',totalKits)
+
+                // Calcula o total com IVA
+                const iva = 0.15;
+                const totalComIva = totalGeral * (1 + iva);
+
+                // Exibe os valores calculados
+                document.getElementById('valor-autocolantes').textContent = totalAutocolantes.toFixed(2);
+                document.getElementById('valor-buzina').textContent = totalBuzina.toFixed(2);
+                document.getElementById('valor-chaparia').textContent = totalChaparia.toFixed(2);
+                document.getElementById('valor-matricula').textContent = totalMatricula.toFixed(2);
+                document.getElementById('valor-pinturas').textContent = totalPinturas.toFixed(2);
+                document.getElementById('valor-perolado').textContent = totalPerolado.toFixed(2);
+                document.getElementById('valor-stance').textContent = totalStance.toFixed(2);
+                document.getElementById('valor-pneublindadodrift').textContent = totalPneu.toFixed(2);
+                document.getElementById('valor-jantes').textContent = totalJantes.toFixed(2);
+                document.getElementById('valor-cordasrodas').textContent = totalCorRodas.toFixed(2);
+                document.getElementById('valor-armadura').textContent = totalArmadura.toFixed(2);
+                document.getElementById('valor-motor').textContent = totalMotor.toFixed(2);
+                document.getElementById('valor-suspensao').textContent = totalSuspensao.toFixed(2);
+                document.getElementById('valor-transmissao').textContent = totalTransmissao.toFixed(2);
+                document.getElementById('valor-travoes').textContent = totalTravoes.toFixed(2);
+                document.getElementById('valor-turbo').textContent = totalTurbo.toFixed(2);
+                document.getElementById('valor-kits').textContent = totalKits.toFixed(2) 
+                //console.log(document.getElementById('valor-kits').textContent = totalKits.toFixed(2) )//totalKits.toFixed(2);
+                document.getElementById('valor-vendacontrato').textContent = totalVenda.toFixed(2);
+                document.getElementById('valor-total').textContent = totalGeral.toFixed(2);
+                document.getElementById('valor-total-iva').textContent = totalComIva.toFixed(2);
+            }else{
+                const totalGeral = totalKits
+                document.getElementById('valor-kits').textContent = totalKits.toFixed(2) 
+            }
+        }
+
+        function resetarFormulario() {
+            document.getElementById('carros').selectedIndex = 0; // Restaura a opção inicial
+            carroSelecionado = null; // Limpa o carro selecionado
+
+            // Reseta todos os campos de entrada e valores calculados
+            document.getElementById('quantidade-autocolantes').value = 0;
+            document.getElementById('valor-autocolantes').textContent = '0';
+            document.getElementById('quantidade-buzina').value = 0;
+            document.getElementById('valor-buzina').textContent = '0';
+            document.getElementById('quantidade-chaparia').value = 0;
+            document.getElementById('valor-chaparia').textContent = '0';
+            document.getElementById('quantidade-matricula').value = 0;
+            document.getElementById('valor-matricula').textContent = '0';
+            document.getElementById('quantidade-pinturas').value = 0;
+            document.getElementById('valor-pinturas').textContent = '0';
+            document.getElementById('quantidade-perolado').value = 0;
+            document.getElementById('valor-perolado').textContent = '0';
+            document.getElementById('quantidade-stance').value = 0;
+            document.getElementById('valor-stance').textContent = '0';
+            document.getElementById('quantidade-pneublindadodrift').value = 0;
+            document.getElementById('valor-pneublindadodrift').textContent = '0';
+            document.getElementById('quantidade-jantes').value = 0;
+            document.getElementById('valor-jantes').textContent = '0';
+            document.getElementById('quantidade-cordasrodas').value = 0;
+            document.getElementById('valor-cordasrodas').textContent = '0';
+            document.getElementById('quantidade-armadura').value = 0;
+            document.getElementById('valor-armadura').textContent = '0';
+            document.getElementById('quantidade-motor').value = 0;
+            document.getElementById('valor-motor').textContent = '0';
+            document.getElementById('quantidade-suspensao').value = 0;
+            document.getElementById('valor-suspensao').textContent = '0';
+            document.getElementById('quantidade-transmissao').value = 0;
+            document.getElementById('valor-transmissao').textContent = '0';
+            document.getElementById('quantidade-travoes').value = 0;
+            document.getElementById('valor-travoes').textContent = '0';
+            document.getElementById('quantidade-turbo').value = 0;
+            document.getElementById('valor-turbo').textContent = '0';
+            document.getElementById('quantidade-kits').value = 0;
+            document.getElementById('valor-kits').textContent = '0';
+            document.getElementById('quantidade-vendacontrato').value = 0;
+            document.getElementById('valor-vendacontrato').textContent = '0';
+            document.getElementById('valor-total').textContent = '0';
+            document.getElementById('valor-total-iva').textContent = '0';
+        }
+
+        // Função para aplicar o desconto de 15% sobre o total com IVA
+        function aplicarDesconto() {
+            const totalGeral = parseFloat(document.getElementById('valor-total').textContent);
+            if (!isNaN(totalGeral) && totalGeral > 0) {
+                const desconto = 0.15;
+                const totalComDesconto = totalGeral * (1 - desconto);
+                document.getElementById('valor-total').textContent = totalComDesconto.toFixed(2);
+            }
+
+        }
+
+
+        // Carrega os carros ao carregar a página
+        carregarCarros();
+    </script>
+</body>
+</html>
